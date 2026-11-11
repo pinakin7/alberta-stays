@@ -8,8 +8,8 @@ in GitHub Actions. This configuration does not create a hosting account or servi
 ## Phase 1: validate the change
 
 Work on a feature branch and open a PR. The CI `validate` jobs install the lockfile,
-typecheck, run the automated tests and build on Node 22 and 24. Require both matrix
-jobs and `staging-rehearsal` to pass before merging to `main` using GitHub branch
+typecheck, run the automated tests and build on Node 22 and 24. The PostgreSQL ingestion job also runs migrations and database tests. Require both matrix
+jobs, the PostgreSQL job and `staging-rehearsal` to pass before merging to `main` using GitHub branch
 rules, if available for the repository's plan. Workflows alone do not enforce
 branch protection. Never include private founder data or deployment credentials.
 
@@ -30,7 +30,7 @@ minutes: public standard runners are generally free; for private repositories,
 check included minutes and disable paid overages in billing settings. Hosted CI
 must actually pass; a local rehearsal alone does not establish that it did.
 
-Run the same rehearsal locally after `npm ci` and `npm run build`:
+Run the same rehearsal locally after `npm ci`, `npm run db:generate` and `npm run build`:
 
 ```bash
 npm run test:deployment
@@ -109,3 +109,9 @@ these files. GitHub API access is also needed to create the feature PR through
 api.github.com to the cloud environment's allowed destinations if agent access to
 those services is wanted, preserving existing network rules. Do not put tokens or
 deploy hooks in source files or chat.
+
+The optional Repliers/database feature is documented in [listing ingestion](listing-ingestion.md).
+It is disabled by default and does not provision a database. Enabling it requires
+private connection secrets, operator authentication and successful migrations.
+Public display has a separate license-approval flag. Existing illustrative data
+remain available without external credentials.

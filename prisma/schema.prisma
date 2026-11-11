@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+  engineType = "client"
+}
+datasource db {
+  provider = "postgresql"
+}
+model Market {
+  id String @id @default(cuid())
+  name String @unique
+  listings Listing[]
+}
+model DataSource {
+  id String @id @default(cuid())
+  name String
+  url String @unique
+  provider String @default("csv")
+  permissionReference String
+  createdAt DateTime @default(now())
+  listings Listing[]
+}
+model Listing {
+  id String @id @default(cuid())
+  externalId String
+  title String
+  sourceUrl String
+  retrievedAt DateTime
+  importedAt DateTime @default(now())
+  verificationStatus String @default("unverified")
+  priceCad Decimal @db.Decimal(14, 2)
+  bedrooms Int?
+  mlsNumber String?
+  boardId Int?
+  brokerageName String?
+  expiresAt DateTime?
+  marketId String
+  market Market @relation(fields: [marketId], references: [id])
+  sourceId String
+  source DataSource @relation(fields: [sourceId], references: [id])
+  @@unique([sourceId, externalId])
+  @@index([marketId, retrievedAt])
+}
+model ScenarioSnapshot {
+  id String @id @default(cuid())
+  name String
+  inputs Json
+  outputs Json
+  calculationVersion String
+  createdAt DateTime @default(now())
+}

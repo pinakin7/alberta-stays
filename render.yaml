@@ -6,8 +6,11 @@ services:
     plan: free
     branch: main
     autoDeploy: false
-    buildCommand: npm ci --include=dev && npm run typecheck && npm test && npm run build
-    startCommand: npm start
+    buildCommand: npm ci --include=dev && npm run db:generate && npm run typecheck && npm test && npm run build
+    # Run migrations only when storage is explicitly activated; fail startup on
+    # migration errors. Database credentials are configured as dashboard secrets.
+    startCommand: >-
+      if [ "$ENABLE_LISTING_STORAGE" = "true" ]; then npm run db:migrate; fi && npm start
     healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV

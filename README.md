@@ -8,16 +8,18 @@ React + TypeScript + Vite frontend, Express + TypeScript API. The server serves 
 ## Local setup
 ```bash
 npm ci
+npm run db:generate
 npm run dev
 ```
 Visit http://localhost:5173. API at http://localhost:3001.
 
 ## Production
 ```bash
+npm run db:generate
 npm run build
 npm start
 ```
-Use Node.js 22.12+ or 24 LTS (CI tests both). Deploy to a Node host with build command `npm ci && npm run build`, start command `npm start`, and `PORT` assigned by the host.
+Use Node.js 22.12+ or 24 LTS (CI tests both). Deploy to a Node host with build command `npm ci && npm run db:generate && npm run build`, start command `npm start`, and `PORT` assigned by the host.
 
 ## API
 - GET /api/health
@@ -96,3 +98,16 @@ rollback. `render.yaml` provisions no database or paid instance. Rehearse locall
 with `npm run build && npm run test:deployment`; check a deployed service with
 `npm run smoke -- https://YOUR-SERVICE.onrender.com`. Hosting account activation,
 current free-tier limits and successful live checks are separate prerequisites.
+
+## Sourced listings (Repliers + free-tier PostgreSQL)
+
+See [listing ingestion](docs/listing-ingestion.md) for the Repliers adapter,
+authorized CSV fallback, source provenance, migrations, operator authentication
+and Neon Free setup. Storage and public publication are independently disabled
+by default. API/database credentials and MLS rights must be configured privately;
+no real listing data is bundled or fetched automatically. Repliers API costs are
+separate from the hosting/database free tiers.
+
+After `npm ci`, run `npm run db:generate` before typechecking/building. CI also
+runs PostgreSQL migration and ingestion tests. The original planning benchmarks
+remain illustrative and are separate from imported asking-price records.
