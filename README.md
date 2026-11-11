@@ -87,3 +87,12 @@ projection.
 This prepares a development workflow, not a public production launch. Founder
 authentication/access controls, migrations, secure hosting and sourced data
 remain separate roadmap work. Do not connect a production database yet.
+
+## Deployment phases (Free plan)
+
+See [the deployment guide](docs/deployment.md) for CI validation, a production-build
+staging rehearsal, manual release to one Render Free service, smoke checks and
+rollback. `render.yaml` provisions no database or paid instance. Rehearse locally
+with `npm run build && npm run test:deployment`; check a deployed service with
+`npm run smoke -- https://YOUR-SERVICE.onrender.com`. Hosting account activation,
+current free-tier limits and successful live checks are separate prerequisites.

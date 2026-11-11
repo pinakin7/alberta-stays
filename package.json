@@ -10,7 +10,9 @@
     "build": "vite build --config client/vite.config.ts && tsc -p server/tsconfig.json",
     "start": "node server/dist/index.js",
     "typecheck": "tsc -p client/tsconfig.json && tsc -p server/tsconfig.json --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "smoke": "node scripts/smoke.mjs",
+    "test:deployment": "node scripts/verify-deployment.mjs"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
