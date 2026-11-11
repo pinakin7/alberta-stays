@@ -1,0 +1,16 @@
+# One service only. Confirm the Free plan in Render before applying.
+services:
+  - type: web
+    name: alberta-stays
+    runtime: node
+    plan: free
+    branch: main
+    autoDeploy: false
+    buildCommand: npm ci --include=dev && npm run typecheck && npm test && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 24.22.1
